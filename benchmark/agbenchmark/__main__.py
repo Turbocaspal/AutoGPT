@@ -225,10 +225,10 @@ def cli(
         raise ("`agbenchmark start` is removed. Run `agbenchmark` instead.")
     if value == "serve":
         return serve()
-    original_stdout = sys.stdout  # Save the original standard output
     exit_code = None
 
     if backend:
+        original_stdout = sys.stdout  # Save the original standard output
         with open("backend/backend_stdout.txt", "w") as f:
             sys.stdout = f
             exit_code = run_benchmark(

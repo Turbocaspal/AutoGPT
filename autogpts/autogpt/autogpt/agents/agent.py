@@ -122,9 +122,7 @@ class Agent(
             remaining_budget = (
                 api_manager.get_total_budget() - api_manager.get_total_cost()
             )
-            if remaining_budget < 0:
-                remaining_budget = 0
-
+            remaining_budget = max(remaining_budget, 0)
             budget_msg = ChatMessage.system(
                 f"Your remaining API budget is ${remaining_budget:.3f}"
                 + (
@@ -290,9 +288,7 @@ async def execute_command(
     if command := agent.command_registry.get_command(command_name):
         try:
             result = command(**arguments, agent=agent)
-            if inspect.isawaitable(result):
-                return await result
-            return result
+            return await result if inspect.isawaitable(result) else result
         except AgentException:
             raise
         except Exception as e:

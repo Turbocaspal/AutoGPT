@@ -71,7 +71,9 @@ class StepRequestBody(BaseModel):
         if not isinstance(obj, dict):
             return StepRequestBody.parse_obj(obj)
 
-        _obj = StepRequestBody.parse_obj(
-            {"input": obj.get("input"), "additional_input": obj.get("additional_input")}
+        return StepRequestBody.parse_obj(
+            {
+                "input": obj.get("input"),
+                "additional_input": obj.get("additional_input"),
+            }
         )
-        return _obj

@@ -76,4 +76,4 @@ def execute_subprocess(command, timeout):
         run_linux_env(process, start_time, timeout)
     process.wait()
     if process.returncode != 0:
-        print(f"The agent timed out")
+        print("The agent timed out")

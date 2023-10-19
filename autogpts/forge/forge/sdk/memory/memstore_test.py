@@ -8,8 +8,7 @@ from forge.sdk.memory.memstore import ChromaMemStore
 
 @pytest.fixture
 def memstore():
-    mem = ChromaMemStore(".test_mem_store")
-    yield mem
+    yield ChromaMemStore(".test_mem_store")
     shutil.rmtree(".test_mem_store")
 
 

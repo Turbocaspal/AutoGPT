@@ -57,7 +57,7 @@ class MemoryItem(BaseModel, arbitrary_types_allowed=True):
                 else chunk_content(text, config.embedding_model)
             )
         ]
-        logger.debug("Chunks: " + str(chunks))
+        logger.debug(f"Chunks: {chunks}")
 
         chunk_summaries = [
             summary
@@ -71,7 +71,7 @@ class MemoryItem(BaseModel, arbitrary_types_allowed=True):
                 for text_chunk in chunks
             ]
         ]
-        logger.debug("Chunk summaries: " + str(chunk_summaries))
+        logger.debug(f"Chunk summaries: {chunk_summaries}")
 
         e_chunks = get_embedding(chunks, config)
 
@@ -85,7 +85,7 @@ class MemoryItem(BaseModel, arbitrary_types_allowed=True):
                 question=question_for_summary,
             )[0]
         )
-        logger.debug("Total summary: " + summary)
+        logger.debug(f"Total summary: {summary}")
 
         # TODO: investigate search performance of weighted average vs summary
         # e_average = np.average(e_chunks, axis=0, weights=[len(c) for c in chunks])

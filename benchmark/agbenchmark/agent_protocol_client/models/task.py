@@ -64,9 +64,7 @@ class Task(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each item in artifacts (list)
         _items = []
         if self.artifacts:
-            for _item in self.artifacts:
-                if _item:
-                    _items.append(_item.to_dict())
+            _items.extend(_item.to_dict() for _item in self.artifacts if _item)
             _dict["artifacts"] = _items
         # set to None if additional_input (nullable) is None
         # and __fields_set__ contains the field
@@ -84,7 +82,7 @@ class Task(BaseModel):
         if not isinstance(obj, dict):
             return Task.parse_obj(obj)
 
-        _obj = Task.parse_obj(
+        return Task.parse_obj(
             {
                 "input": obj.get("input"),
                 "additional_input": obj.get("additional_input"),
@@ -96,4 +94,3 @@ class Task(BaseModel):
                 else None,
             }
         )
-        return _obj

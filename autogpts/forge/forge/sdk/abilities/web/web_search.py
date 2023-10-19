@@ -66,10 +66,13 @@ def safe_google_results(results: str | list) -> str:
     Returns:
         str: The results of the search.
     """
-    if isinstance(results, list):
-        safe_message = json.dumps(
-            [result.encode("utf-8", "ignore").decode("utf-8") for result in results]
+    return (
+        json.dumps(
+            [
+                result.encode("utf-8", "ignore").decode("utf-8")
+                for result in results
+            ]
         )
-    else:
-        safe_message = results.encode("utf-8", "ignore").decode("utf-8")
-    return safe_message
+        if isinstance(results, list)
+        else results.encode("utf-8", "ignore").decode("utf-8")
+    )

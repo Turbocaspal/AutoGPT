@@ -18,8 +18,7 @@ async def chat_completion_request(
         kwargs["model"] = model
         kwargs["messages"] = messages
 
-        resp = await acompletion(**kwargs)
-        return resp
+        return await acompletion(**kwargs)
     except AuthenticationError as e:
         LOG.exception("Authentication Error")
     except InvalidRequestError as e:

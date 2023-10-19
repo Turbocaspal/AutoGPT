@@ -35,7 +35,7 @@ def test_entire_workflow(
     task_count_before = response.json()["pagination"]["total_items"]
     # First POST request
     task_response_benchmark = requests.post(
-        URL_BENCHMARK + "/agent/tasks", json=task_request
+        f"{URL_BENCHMARK}/agent/tasks", json=task_request
     )
     response = requests.get(f"{URL_AGENT}/agent/tasks")
     task_count_after = response.json()["pagination"]["total_items"]
@@ -59,7 +59,7 @@ def test_entire_workflow(
     step_request = {"input": input_text}
 
     step_response = requests.post(
-        URL_BENCHMARK + "/agent/tasks/" + task_response_benchmark_id + "/steps",
+        f"{URL_BENCHMARK}/agent/tasks/{task_response_benchmark_id}/steps",
         json=step_request,
     )
     assert step_response.status_code == 200
@@ -67,7 +67,7 @@ def test_entire_workflow(
     assert step_response["is_last"] == True  # Assuming is_last is always True
 
     eval_response = requests.post(
-        URL_BENCHMARK + "/agent/tasks/" + task_response_benchmark_id + "/evaluations",
+        f"{URL_BENCHMARK}/agent/tasks/{task_response_benchmark_id}/evaluations",
         json={},
     )
     assert eval_response.status_code == 200

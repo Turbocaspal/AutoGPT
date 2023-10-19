@@ -59,9 +59,7 @@ class TaskAllOf(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each item in artifacts (list)
         _items = []
         if self.artifacts:
-            for _item in self.artifacts:
-                if _item:
-                    _items.append(_item.to_dict())
+            _items.extend(_item.to_dict() for _item in self.artifacts if _item)
             _dict["artifacts"] = _items
         return _dict
 
@@ -74,7 +72,7 @@ class TaskAllOf(BaseModel):
         if not isinstance(obj, dict):
             return TaskAllOf.parse_obj(obj)
 
-        _obj = TaskAllOf.parse_obj(
+        return TaskAllOf.parse_obj(
             {
                 "task_id": obj.get("task_id"),
                 "artifacts": [
@@ -84,4 +82,3 @@ class TaskAllOf(BaseModel):
                 else None,
             }
         )
-        return _obj

@@ -112,8 +112,7 @@ d88P     888  "Y88888  "Y888 "Y88P"   "Y8888P88 888           888
     # Check for the existence of the .github_access_token file
     if os.path.exists(".github_access_token"):
         with open(".github_access_token", "r") as file:
-            github_access_token = file.read().strip()
-            if github_access_token:
+            if github_access_token := file.read().strip():
                 click.echo(
                     click.style(
                         "✅ GitHub access token loaded successfully.", fg="green"
@@ -274,7 +273,7 @@ def start(agent_name, no_setup):
             setup_process = subprocess.Popen(["./setup"], cwd=agent_dir)
             setup_process.wait()
         subprocess.Popen(["./run_benchmark", "serve"], cwd=agent_dir)
-        click.echo(f"Benchmark Server starting please wait...")
+        click.echo("Benchmark Server starting please wait...")
         subprocess.Popen(["./run"], cwd=agent_dir)
         click.echo(f"Agent '{agent_name}' starting please wait...")
     elif not os.path.exists(agent_dir):
@@ -313,7 +312,7 @@ def stop():
     try:
         pids = int(subprocess.check_output(["lsof", "-t", "-i", ":8080"]))
         if isinstance(pids, int):
-            os.kill(int(pids), signal.SIGTERM)
+            os.kill(pids, signal.SIGTERM)
         else:
             for pid in pids:
                 os.kill(int(pid), signal.SIGTERM)
@@ -327,12 +326,11 @@ def list():
 
     try:
         agents_dir = "./autogpts"
-        agents_list = [
+        if agents_list := [
             d
             for d in os.listdir(agents_dir)
             if os.path.isdir(os.path.join(agents_dir, d))
-        ]
-        if agents_list:
+        ]:
             click.echo(click.style("Available agents: 🤖", fg="green"))
             for agent in agents_list:
                 click.echo(click.style(f"\t🐙 {agent}", fg="blue"))
@@ -644,7 +642,7 @@ def enter(agent_name, branch):
             )
             click.echo(
                 click.style(
-                    f"1. Get the git hash of your submission by running 'git rev-parse HEAD' on the branch you want to submit to the arena.",
+                    "1. Get the git hash of your submission by running 'git rev-parse HEAD' on the branch you want to submit to the arena.",
                     fg="yellow",
                 )
             )
@@ -662,24 +660,22 @@ def enter(agent_name, branch):
             )
             click.echo(
                 click.style(
-                    f"Note: The '--branch' option is only needed if you want to change the branch that will be used.",
+                    "Note: The '--branch' option is only needed if you want to change the branch that will be used.",
                     fg="yellow",
                 )
             )
             return
 
-    # Check if there are staged changes
-    staged_changes = [
+    if staged_changes := [
         line
         for line in subprocess.check_output(["git", "status", "--porcelain"])
         .decode("utf-8")
         .split("\n")
         if line and line[0] in ("A", "M", "D", "R", "C")
-    ]
-    if staged_changes:
+    ]:
         click.echo(
             click.style(
-                f"❌ There are staged changes. Please commit or stash them and run the command again.",
+                "❌ There are staged changes. Please commit or stash them and run the command again.",
                 fg="red",
             )
         )
@@ -705,11 +701,7 @@ def enter(agent_name, branch):
             )
 
         # If --branch is passed, use it instead of master
-        if branch:
-            branch_to_use = branch
-        else:
-            branch_to_use = "master"
-
+        branch_to_use = branch if branch else "master"
         # Get the commit hash of HEAD of the branch_to_use
         commit_hash_to_benchmark = (
             subprocess.check_output(["git", "rev-parse", branch_to_use])
@@ -751,8 +743,7 @@ def enter(agent_name, branch):
         g = Github(github_access_token)
         repo_name = github_repo_url.replace("https://github.com/", '')
         repo = g.get_repo(repo_name)
-        parent_repo = repo.parent
-        if parent_repo:
+        if parent_repo := repo.parent:
             pr_message = f"""
 ### 🌟 Welcome to the AutoGPT Arena Hacks Hackathon! 🌟
 

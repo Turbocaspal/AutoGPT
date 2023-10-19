@@ -62,9 +62,9 @@ def curved_edges(
             control = [(src[0] + dst[0]) / 2, src[1] + dist]
             curve = bezier_curve(src, control, dst)
             arrow = patches.FancyArrowPatch(
-                posA=curve[0],  # type: ignore
-                posB=curve[-1],  # type: ignore
-                connectionstyle=f"arc3,rad=0.2",
+                posA=curve[0],
+                posB=curve[-1],
+                connectionstyle="arc3,rad=0.2",
                 color="gray",
                 arrowstyle="-|>",
                 mutation_scale=15.0,
@@ -87,12 +87,9 @@ def curved_edges(
 def tree_layout(graph: nx.DiGraph, root_node: Any) -> Dict[Any, Tuple[float, float]]:
     """Compute positions as a tree layout centered on the root with alternating vertical shifts."""
     bfs_tree = nx.bfs_tree(graph, source=root_node)
-    levels = {
-        node: depth
-        for node, depth in nx.single_source_shortest_path_length(
-            bfs_tree, root_node
-        ).items()
-    }
+    levels = dict(
+        nx.single_source_shortest_path_length(bfs_tree, root_node).items()
+    )
 
     pos = {}
     max_depth = max(levels.values())
@@ -100,7 +97,7 @@ def tree_layout(graph: nx.DiGraph, root_node: Any) -> Dict[Any, Tuple[float, flo
 
     # Count the number of nodes per level to compute the width
     level_count: Any = {}
-    for node, level in levels.items():
+    for level in levels.values():
         level_count[level] = level_count.get(level, 0) + 1
 
     vertical_offset = (
@@ -220,7 +217,10 @@ def graph_interactive_network(
         edge_id_str = (
             f"{source_id_str}_to_{target_id_str}"  # Construct a unique edge id
         )
-        if not (source_id_str in nt.get_nodes() and target_id_str in nt.get_nodes()):
+        if (
+            source_id_str not in nt.get_nodes()
+            or target_id_str not in nt.get_nodes()
+        ):
             print(
                 f"Skipping edge {source_id_str} -> {target_id_str} due to missing nodes."
             )
@@ -426,9 +426,7 @@ def validate_skill_tree(graph, skill_tree_name):
     :param graph: A dictionary representing the graph with 'nodes' and 'edges'.
     :raises: ValueError with a description of the invalidity.
     """
-    # Check for circularity
-    cycle_path = is_circular(graph)
-    if cycle_path:
+    if cycle_path := is_circular(graph):
         cycle_str = " -> ".join(cycle_path)
         raise ValueError(
             f"{skill_tree_name} skill tree is circular! Circular path detected: {cycle_str}."

@@ -136,10 +136,7 @@ for base, copies in chat_model_mapping.items():
             copy_info.has_function_call_api = False
 
 
-OPEN_AI_MODELS = {
-    **OPEN_AI_CHAT_MODELS,
-    **OPEN_AI_EMBEDDING_MODELS,
-}
+OPEN_AI_MODELS = OPEN_AI_CHAT_MODELS | OPEN_AI_EMBEDDING_MODELS
 
 
 class OpenAIConfiguration(SystemConfiguration):
@@ -368,13 +365,11 @@ class OpenAIProvider(
             The kwargs for the embedding API call.
 
         """
-        embedding_kwargs = {
+        return {
             "model": model_name,
             **kwargs,
             **self._credentials.unmasked(),
         }
-
-        return embedding_kwargs
 
     def __repr__(self):
         return "OpenAIProvider()"
@@ -594,11 +589,12 @@ def _functions_compat_extract_call(response: str) -> AssistantFunctionCallDict:
 
     if response[0] == "{":
         function_call = json.loads(response)
-    else:
-        block = re.search(r"```(?:function_call)?\n(.*)\n```\s*$", response, re.DOTALL)
-        if not block:
-            raise ValueError("Could not find function call block in response")
+    elif block := re.search(
+        r"```(?:function_call)?\n(.*)\n```\s*$", response, re.DOTALL
+    ):
         function_call = json.loads(block.group(1))
 
+    else:
+        raise ValueError("Could not find function call block in response")
     function_call["arguments"] = str(function_call["arguments"])  # HACK
     return function_call

@@ -72,13 +72,10 @@ class ReportManager:
 
         try:
             with open(self.filename, "r") as f:
-                file_content = (
-                    f.read().strip()
-                )  # read the content and remove any leading/trailing whitespace
-                if file_content:  # if file is not empty, load the json
+                if file_content := (f.read().strip()):
                     data = json.loads(file_content)
                     self.tests = {k: data[k] for k in sorted(data)}
-                else:  # if file is empty, assign an empty dictionary
+                else:
                     self.tests = {}
         except FileNotFoundError:
             self.tests = {}
@@ -91,8 +88,7 @@ class ReportManager:
             json.dump(self.tests, f, indent=4)
 
     def add_test(self, test_name: str, test_details: dict | list) -> None:
-        if test_name.startswith("Test"):
-            test_name = test_name[4:]
+        test_name = test_name.removeprefix("Test")
         self.tests[test_name] = test_details
 
         self.save()
@@ -120,7 +116,7 @@ class ReportManager:
                 "%Y-%m-%dT%H:%M:%S+00:00"
             ),
             "metrics": {
-                "run_time": str(round(time.time() - self.start_time, 2)) + " seconds",
+                "run_time": f"{str(round(time.time() - self.start_time, 2))} seconds",
                 "highest_difficulty": get_highest_success_difficulty(self.tests),
                 "total_cost": self.get_total_costs(),
             },

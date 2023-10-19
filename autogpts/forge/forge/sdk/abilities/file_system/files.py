@@ -19,7 +19,7 @@ async def list_files(agent, task_id: str, path: str) -> List[str]:
     """
     List files in a workspace directory
     """
-    return agent.workspace.list(task_id=task_id, path=str(path))
+    return agent.workspace.list(task_id=task_id, path=path)
 
 
 @ability(

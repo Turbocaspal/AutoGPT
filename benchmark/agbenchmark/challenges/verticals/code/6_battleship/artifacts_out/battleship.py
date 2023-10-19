@@ -105,12 +105,11 @@ class Battleship(AbstractBattleship):
 
             game.board[(target_row, target_col)] = "hit"
 
-            if set(ship_positions).issubset(targeted_positions):
-                for pos in ship_positions:
-                    game.board[pos] = "hit"
-                return TurnResponse(result="sunk", ship_type=hit_ship)
-            else:
+            if not set(ship_positions).issubset(targeted_positions):
                 return TurnResponse(result="hit", ship_type=hit_ship)
+            for pos in ship_positions:
+                game.board[pos] = "hit"
+            return TurnResponse(result="sunk", ship_type=hit_ship)
 
     def get_game_status(self, game_id: str) -> GameStatus:
         game = self.games.get(game_id)
@@ -132,10 +131,7 @@ class Battleship(AbstractBattleship):
     def get_winner(self, game_id: str) -> str:
         game_status = self.get_game_status(game_id)
 
-        if game_status.is_game_over:
-            return game_status.winner
-        else:
-            return None
+        return game_status.winner if game_status.is_game_over else None
 
     def get_game(self, game_id: str) -> Game:
         return self.games.get(game_id)
@@ -145,5 +141,5 @@ class Battleship(AbstractBattleship):
             del self.games[game_id]
 
     def all_ships_placed(self, game: Game) -> bool:
-        placed_ship_types = set([placement.ship_type for placement in game.ships])
+        placed_ship_types = {placement.ship_type for placement in game.ships}
         return placed_ship_types == set(self.SHIP_LENGTHS.keys())

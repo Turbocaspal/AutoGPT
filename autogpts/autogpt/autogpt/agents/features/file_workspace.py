@@ -27,11 +27,10 @@ class FileWorkspaceMixin:
             raise ValueError(
                 "Cannot initialize Workspace for Agent without compatible .config"
             )
-        file_manager: AgentFileManager = getattr(self, "file_manager")
-        if not file_manager:
+        if file_manager := getattr(self, "file_manager"):
+            self.workspace = _setup_workspace(file_manager, config)
+        else:
             return
-
-        self.workspace = _setup_workspace(file_manager, config)
 
     def attach_fs(self, agent_dir: Path):
         res = super(FileWorkspaceMixin, self).attach_fs(agent_dir)
@@ -51,7 +50,4 @@ def _setup_workspace(file_manager: AgentFileManager, config: BaseAgentConfigurat
 
 
 def get_agent_workspace(agent: BaseAgent) -> FileWorkspace | None:
-    if isinstance(agent, FileWorkspaceMixin):
-        return agent.workspace
-
-    return None
+    return agent.workspace if isinstance(agent, FileWorkspaceMixin) else None

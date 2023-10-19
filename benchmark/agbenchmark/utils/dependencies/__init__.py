@@ -35,7 +35,7 @@ def _add_ini_and_option(
     """Add an option to both the ini file as well as the command line flags, with the latter overriding the former."""
     parser.addini(
         name,
-        help + " This overrides the similarly named option from the config.",
+        f"{help} This overrides the similarly named option from the config.",
         default=default,
     )
     group.addoption(f'--{name.replace("_", "-")}', help=help, default=None, **kwargs)

@@ -17,13 +17,13 @@ class TestOrganizeFiles(unittest.TestCase):
         }
 
         # Create test files
-        for file_name in self.file_types.keys():
+        for file_name in self.file_types:
             open(os.path.join(self.test_dir, file_name), "a").close()
 
     def test_organize_files(self):
         # Call the organize_files.py script using subprocess
         subprocess.call(
-            ["python", "organize_files.py", "--directory_path=" + self.test_dir]
+            ["python", "organize_files.py", f"--directory_path={self.test_dir}"]
         )
 
         # Check if the files have been moved to the correct directories

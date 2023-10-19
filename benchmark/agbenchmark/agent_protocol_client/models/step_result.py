@@ -77,7 +77,7 @@ class StepResult(BaseModel):
         if not isinstance(obj, dict):
             return StepResult.parse_obj(obj)
 
-        _obj = StepResult.parse_obj(
+        return StepResult.parse_obj(
             {
                 "output": obj.get("output"),
                 "artifacts": obj.get("artifacts"),
@@ -86,4 +86,3 @@ class StepResult(BaseModel):
                 else False,
             }
         )
-        return _obj

@@ -52,11 +52,11 @@ def formatter_message(message: str, use_color: bool = True) -> str:
     """
     Syntax highlight certain keywords
     """
-    if use_color:
-        message = message.replace("$RESET", RESET_SEQ).replace("$BOLD", BOLD_SEQ)
-    else:
-        message = message.replace("$RESET", "").replace("$BOLD", "")
-    return message
+    return (
+        message.replace("$RESET", RESET_SEQ).replace("$BOLD", BOLD_SEQ)
+        if use_color
+        else message.replace("$RESET", "").replace("$BOLD", "")
+    )
 
 
 def format_word(
@@ -134,13 +134,13 @@ class ForgeLogger(logging.Logger):
         """
         Parse the content, log the message and extract the usage into prometheus metrics
         """
-        role_emojis = {
-            "system": "🖥️",
-            "user": "👤",
-            "assistant": "🤖",
-            "function": "⚙️",
-        }
         if self.isEnabledFor(CHAT):
+            role_emojis = {
+                "system": "🖥️",
+                "user": "👤",
+                "assistant": "🤖",
+                "function": "⚙️",
+            }
             if messages:
                 for message in messages:
                     self._log(

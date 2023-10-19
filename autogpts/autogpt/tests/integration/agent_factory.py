@@ -46,11 +46,9 @@ def dummy_agent(config: Config, llm_provider, memory_json_file):
         history=Agent.default_settings.history.copy(deep=True),
     )
 
-    agent = Agent(
+    return Agent(
         settings=agent_settings,
         llm_provider=llm_provider,
         command_registry=command_registry,
         legacy_config=config,
     )
-
-    return agent

@@ -36,11 +36,7 @@ def get_agent_category(report: Report) -> dict[str, Any]:
 
     def get_highest_category_difficulty(data: Test) -> None:
         for category in data.category:
-            if (
-                category == "interface"
-                or category == "iterate"
-                or category == "product_advisor"
-            ):
+            if category in ["interface", "iterate", "product_advisor"]:
                 continue
             categories.setdefault(category, 0)
             if data.metrics.success:
@@ -58,8 +54,7 @@ def all_agent_categories(reports_data: dict[str, Any]) -> dict[str, Any]:
     all_categories: dict[str, Any] = {}
 
     for name, report in reports_data.items():
-        categories = get_agent_category(report)
-        if categories:  # only add to all_categories if categories is not empty
+        if categories := get_agent_category(report):
             print(f"Adding {name}: {categories}")
             all_categories[name] = categories
 

@@ -62,8 +62,10 @@ class JSONSchema(BaseModel):
         return JSONSchema(
             description=schema.get("description"),
             type=schema["type"],
-            enum=schema["enum"] if "enum" in schema else None,
-            items=JSONSchema.from_dict(schema["items"]) if "items" in schema else None,
+            enum=schema.get("enum", None),
+            items=JSONSchema.from_dict(schema["items"])
+            if "items" in schema
+            else None,
             properties=JSONSchema.parse_properties(schema)
             if schema["type"] == "object"
             else None,

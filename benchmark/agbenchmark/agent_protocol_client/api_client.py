@@ -223,7 +223,7 @@ class ApiClient(object):
         if query_params:
             query_params = self.sanitize_for_serialization(query_params)
             url_query = self.parameters_to_url_query(query_params, collection_formats)
-            url += "?" + url_query
+            url += f"?{url_query}"
 
         try:
             # perform request and return response
@@ -302,16 +302,7 @@ class ApiClient(object):
         elif isinstance(obj, (datetime.datetime, datetime.date)):
             return obj.isoformat()
 
-        if isinstance(obj, dict):
-            obj_dict = obj
-        else:
-            # Convert model obj to dict except
-            # attributes `openapi_types`, `attribute_map`
-            # and attributes which value is not None.
-            # Convert attribute name to json key in
-            # model definition for request.
-            obj_dict = obj.to_dict()
-
+        obj_dict = obj if isinstance(obj, dict) else obj.to_dict()
         return {
             key: self.sanitize_for_serialization(val) for key, val in obj_dict.items()
         }
@@ -652,7 +643,7 @@ class ApiClient(object):
                             mimetypes.guess_type(filename)[0]
                             or "application/octet-stream"
                         )
-                        params.append(tuple([k, tuple([filename, filedata, mimetype])]))
+                        params.append((k, (filename, filedata, mimetype)))
 
         return params
 
@@ -718,8 +709,7 @@ class ApiClient(object):
             return
 
         for auth in auth_settings:
-            auth_setting = self.configuration.auth_settings().get(auth)
-            if auth_setting:
+            if auth_setting := self.configuration.auth_settings().get(auth):
                 self._apply_auth_params(
                     headers, queries, resource_path, method, body, auth_setting
                 )
@@ -760,8 +750,7 @@ class ApiClient(object):
         os.close(fd)
         os.remove(path)
 
-        content_disposition = response.getheader("Content-Disposition")
-        if content_disposition:
+        if content_disposition := response.getheader("Content-Disposition"):
             filename = re.search(
                 r'filename=[\'"]?([^\'"\s]+)[\'"]?', content_disposition
             ).group(1)

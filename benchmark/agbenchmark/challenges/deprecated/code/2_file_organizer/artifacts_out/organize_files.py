@@ -12,7 +12,7 @@ def organize_files(directory_path):
     }
 
     # Create the folders if they don't exist
-    for folder_name in file_types.keys():
+    for folder_name in file_types:
         folder_path = os.path.join(directory_path, folder_name)
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)

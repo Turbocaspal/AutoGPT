@@ -31,8 +31,8 @@ def save_combined_radar_chart(
 
     # Define a custom normalization to start the color from the middle
     norm = Normalize(
-        vmin=0, vmax=max([max(val.values()) for val in categories.values()])
-    )  # We use the maximum of all categories for normalization
+        vmin=0, vmax=max(max(val.values()) for val in categories.values())
+    )
 
     cmap = plt.cm.get_cmap("nipy_spectral", len(categories))  # type: ignore
 

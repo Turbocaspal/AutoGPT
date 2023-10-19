@@ -21,7 +21,7 @@ class AgentContext:
         return len(self.items) > 0
 
     def __contains__(self, item: ContextItem) -> bool:
-        return any([i.source == item.source for i in self.items])
+        return any(i.source == item.source for i in self.items)
 
     def add(self, item: ContextItem) -> None:
         self.items.append(item)
@@ -76,7 +76,4 @@ class ContextMixin:
 
 
 def get_agent_context(agent: BaseAgent) -> AgentContext | None:
-    if isinstance(agent, ContextMixin):
-        return agent.context
-
-    return None
+    return agent.context if isinstance(agent, ContextMixin) else None

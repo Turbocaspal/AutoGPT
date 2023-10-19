@@ -76,24 +76,23 @@ def get_highest_success_difficulty(
                         f"Unexpected difficulty level '{highest_difficulty_str}' in test '{test_name}'"
                     )
                     continue
-            else:
-                if test_data["metrics"]["success"]:
-                    difficulty_str = test_data["metrics"]["difficulty"]
+            elif test_data["metrics"]["success"]:
+                difficulty_str = test_data["metrics"]["difficulty"]
 
-                    try:
-                        difficulty_enum = DifficultyLevel[difficulty_str.lower()]
-                        difficulty_level = DIFFICULTY_MAP[difficulty_enum]
+                try:
+                    difficulty_enum = DifficultyLevel[difficulty_str.lower()]
+                    difficulty_level = DIFFICULTY_MAP[difficulty_enum]
 
-                        if difficulty_level > highest_difficulty_level:
-                            highest_difficulty = difficulty_enum
-                            highest_difficulty_level = difficulty_level
-                    except KeyError:
-                        print(
-                            f"Unexpected difficulty level '{difficulty_str}' in test '{test_name}'"
-                        )
-                        continue
+                    if difficulty_level > highest_difficulty_level:
+                        highest_difficulty = difficulty_enum
+                        highest_difficulty_level = difficulty_level
+                except KeyError:
+                    print(
+                        f"Unexpected difficulty level '{difficulty_str}' in test '{test_name}'"
+                    )
+                    continue
         except Exception:
-            print(f"Make sure you selected the right test, no reports were generated.")
+            print("Make sure you selected the right test, no reports were generated.")
             break
 
     if highest_difficulty is not None:
@@ -126,10 +125,10 @@ def get_highest_success_difficulty(
 def agent_eligibible_for_optional_categories(
     optional_challenge_categories: List, agent_categories: List
 ) -> bool:
-    for element in optional_challenge_categories:
-        if element not in agent_categories:
-            return False
-    return True
+    return all(
+        element in agent_categories
+        for element in optional_challenge_categories
+    )
 
 
 def write_pretty_json(data, json_file):
@@ -146,6 +145,4 @@ def deep_sort(obj):
     """
     if isinstance(obj, dict):
         return {k: deep_sort(v) for k, v in sorted(obj.items())}
-    if isinstance(obj, list):
-        return [deep_sort(elem) for elem in obj]
-    return obj
+    return [deep_sort(elem) for elem in obj] if isinstance(obj, list) else obj
