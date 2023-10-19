@@ -89,9 +89,7 @@ class StepAllOf(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each item in artifacts (list)
         _items = []
         if self.artifacts:
-            for _item in self.artifacts:
-                if _item:
-                    _items.append(_item.to_dict())
+            _items.extend(_item.to_dict() for _item in self.artifacts if _item)
             _dict["artifacts"] = _items
         # set to None if additional_output (nullable) is None
         # and __fields_set__ contains the field
@@ -112,7 +110,7 @@ class StepAllOf(BaseModel):
         if not isinstance(obj, dict):
             return StepAllOf.parse_obj(obj)
 
-        _obj = StepAllOf.parse_obj(
+        return StepAllOf.parse_obj(
             {
                 "task_id": obj.get("task_id"),
                 "step_id": obj.get("step_id"),
@@ -130,4 +128,3 @@ class StepAllOf(BaseModel):
                 else False,
             }
         )
-        return _obj

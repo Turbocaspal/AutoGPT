@@ -65,10 +65,8 @@ class SimplePluginService(PluginService):
     @staticmethod
     def load_from_workspace(plugin_route: PluginStorageRoute) -> "PluginType":
         """Load a plugin from the workspace."""
-        plugin = SimplePluginService.load_from_file_path(plugin_route)
-        return plugin
+        return SimplePluginService.load_from_file_path(plugin_route)
 
     @staticmethod
     def load_from_installed_package(plugin_route: PluginStorageRoute) -> "PluginType":
-        plugin = SimplePluginService.load_from_import_path(plugin_route)
-        return plugin
+        return SimplePluginService.load_from_import_path(plugin_route)

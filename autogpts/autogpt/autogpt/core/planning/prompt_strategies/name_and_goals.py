@@ -111,13 +111,12 @@ class NameAndGoals(PromptStrategy):
                 user_objective=user_objective,
             )
         )
-        prompt = ChatPrompt(
+        return ChatPrompt(
             messages=[system_message, user_message],
             functions=[self._create_agent_function],
             # TODO
             tokens_used=0,
         )
-        return prompt
 
     def parse_response_content(
         self,

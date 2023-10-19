@@ -95,9 +95,7 @@ class Step(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each item in artifacts (list)
         _items = []
         if self.artifacts:
-            for _item in self.artifacts:
-                if _item:
-                    _items.append(_item.to_dict())
+            _items.extend(_item.to_dict() for _item in self.artifacts if _item)
             _dict["artifacts"] = _items
         # set to None if additional_input (nullable) is None
         # and __fields_set__ contains the field
@@ -123,7 +121,7 @@ class Step(BaseModel):
         if not isinstance(obj, dict):
             return Step.parse_obj(obj)
 
-        _obj = Step.parse_obj(
+        return Step.parse_obj(
             {
                 "input": obj.get("input"),
                 "additional_input": obj.get("additional_input"),
@@ -143,4 +141,3 @@ class Step(BaseModel):
                 else False,
             }
         )
-        return _obj

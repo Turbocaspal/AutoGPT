@@ -189,7 +189,7 @@ def test_extract_json_from_response(valid_json_response: dict):
 
 
 def test_extract_json_from_response_wrapped_in_code_block(valid_json_response: dict):
-    emulated_response_from_openai = "```" + str(valid_json_response) + "```"
+    emulated_response_from_openai = f"```{valid_json_response}```"
     assert (
         extract_dict_from_response(emulated_response_from_openai) == valid_json_response
     )

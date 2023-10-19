@@ -179,11 +179,10 @@ class DependencyManager(object):
         try:
             print("Dependencies:")
             for nodeid, info in sorted(self.dependencies.items(), key=lambda x: x[0]):
-                descriptions = []
-                for dependency in info.dependencies:
-                    descriptions.append(dependency)
-                for dependency in info.unresolved:
-                    descriptions.append(f"{dependency} ({missing})")
+                descriptions = list(info.dependencies)
+                descriptions.extend(
+                    f"{dependency} ({missing})" for dependency in info.unresolved
+                )
                 if descriptions:
                     print(f"  {nodeid} depends on")
                     for description in sorted(descriptions):

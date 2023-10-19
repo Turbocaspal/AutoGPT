@@ -136,16 +136,14 @@ class AgentProtocolServer:
         """
         logger.debug("Listing all tasks...")
         tasks, pagination = await self.db.list_tasks(page, pageSize)
-        response = TaskListResponse(tasks=tasks, pagination=pagination)
-        return response
+        return TaskListResponse(tasks=tasks, pagination=pagination)
 
     async def get_task(self, task_id: int) -> Task:
         """
         Get a task by ID.
         """
         logger.debug(f"Getting task with ID: {task_id}...")
-        task = await self.db.get_task(task_id)
-        return task
+        return await self.db.get_task(task_id)
 
     async def list_steps(
         self, task_id: str, page: int = 1, pageSize: int = 10
@@ -155,8 +153,7 @@ class AgentProtocolServer:
         """
         logger.debug(f"Listing all steps created by task with ID: {task_id}...")
         steps, pagination = await self.db.list_steps(task_id, page, pageSize)
-        response = TaskStepsListResponse(steps=steps, pagination=pagination)
-        return response
+        return TaskStepsListResponse(steps=steps, pagination=pagination)
 
     async def execute_step(self, task_id: str, step_request: StepRequestBody) -> Step:
         """Create a step for the task."""
@@ -305,8 +302,7 @@ class AgentProtocolServer:
         """
         Get a step by ID.
         """
-        step = await self.db.get_step(task_id, step_id)
-        return step
+        return await self.db.get_step(task_id, step_id)
 
     async def list_artifacts(
         self, task_id: str, page: int = 1, pageSize: int = 10
@@ -337,13 +333,12 @@ class AgentProtocolServer:
         workspace = get_task_agent_file_workspace(task_id, self.agent_manager)
         await workspace.write_file(file_path, data)
 
-        artifact = await self.db.create_artifact(
+        return await self.db.create_artifact(
             task_id=task_id,
             file_name=file_name,
             relative_path=relative_path,
             agent_created=False,
         )
-        return artifact
 
     async def get_artifact(self, task_id: str, artifact_id: str) -> Artifact:
         """

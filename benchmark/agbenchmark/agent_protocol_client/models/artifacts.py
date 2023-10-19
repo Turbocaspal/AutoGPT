@@ -53,8 +53,7 @@ class Artifacts(BaseModel):
 
     def to_dict(self):
         """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
-        return _dict
+        return self.dict(by_alias=True, exclude={}, exclude_none=True)
 
     @classmethod
     def from_dict(cls, obj: dict) -> Artifacts:
@@ -65,13 +64,12 @@ class Artifacts(BaseModel):
         if not isinstance(obj, dict):
             return Artifacts.parse_obj(obj)
 
-        _obj = Artifacts.parse_obj(
+        return Artifacts.parse_obj(
             {
                 "artifacts": obj.get("artifacts"),
                 "pagination": obj.get("pagination"),
             }
         )
-        return _obj
 
 
 Artifacts.update_forward_refs()

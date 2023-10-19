@@ -107,9 +107,6 @@ class RESTClientObject(object):
 
         post_params = post_params or {}
         headers = headers or {}
-        # url already contains the URL query string
-        # so reset query_params to empty dict
-        query_params = {}
         timeout = _request_timeout or 5 * 60
 
         if "Content-Type" not in headers:
@@ -122,8 +119,8 @@ class RESTClientObject(object):
         if self.proxy_headers:
             args["proxy_headers"] = self.proxy_headers
 
-        if query_params:
-            args["url"] += "?" + urlencode(query_params)
+        if query_params := {}:
+            args["url"] += f"?{urlencode(query_params)}"
 
         # For `POST`, `PUT`, `PATCH`, `OPTIONS`, `DELETE`
         if method in ["POST", "PUT", "PATCH", "OPTIONS", "DELETE"]:

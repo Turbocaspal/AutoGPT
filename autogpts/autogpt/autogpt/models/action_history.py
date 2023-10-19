@@ -65,9 +65,7 @@ class EpisodicActionHistory(BaseModel):
 
     @property
     def current_episode(self) -> Episode | None:
-        if self.cursor == len(self):
-            return None
-        return self[self.cursor]
+        return None if self.cursor == len(self) else self[self.cursor]
 
     def __getitem__(self, key: int) -> Episode:
         return self.episodes[key]

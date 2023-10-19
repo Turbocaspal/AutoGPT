@@ -51,9 +51,7 @@ class LogCycleHandler:
         self, ai_name: str, created_at: str, cycle_count: int
     ) -> Path:
         outer_folder_path = self.create_outer_directory(ai_name, created_at)
-        nested_folder_path = self.create_inner_directory(outer_folder_path, cycle_count)
-
-        return nested_folder_path
+        return self.create_inner_directory(outer_folder_path, cycle_count)
 
     def log_cycle(
         self,

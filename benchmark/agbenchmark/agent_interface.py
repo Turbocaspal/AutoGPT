@@ -18,7 +18,7 @@ HELICONE_GRAPHQL_LOGS = (
 def run_agent(task: str, timeout: int) -> None:
     print(f"Running agbenchmark/benchmarks.py with timeout {timeout}")
 
-    command = [sys.executable, "-m", "agbenchmark_config.benchmarks", str(task)]
+    command = [sys.executable, "-m", "agbenchmark_config.benchmarks", task]
 
     execute_subprocess(command, timeout)
 

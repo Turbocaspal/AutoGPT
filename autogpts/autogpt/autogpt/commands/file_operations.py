@@ -104,9 +104,7 @@ def is_duplicate_operation(
     state = file_operations_state(agent.file_manager.file_ops_log_path)
     if operation == "delete" and str(file_path) not in state:
         return True
-    if operation == "write" and state.get(str(file_path)) == checksum:
-        return True
-    return False
+    return operation == "write" and state.get(str(file_path)) == checksum
 
 
 @sanitize_path_arg("file_path")
@@ -154,15 +152,7 @@ def read_file(filename: Path, agent: Agent) -> str:
     Returns:
         str: The contents of the file
     """
-    content = read_textual_file(filename, logger)
-    # TODO: content = agent.workspace.read_file(filename)
-
-    # # TODO: invalidate/update memory when file is edited
-    # file_memory = MemoryItem.from_text_file(content, str(filename), agent.config)
-    # if len(file_memory.chunks) > 1:
-    #     return file_memory.summary
-
-    return content
+    return read_textual_file(filename, logger)
 
 
 def ingest_file(

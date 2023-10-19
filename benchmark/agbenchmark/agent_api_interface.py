@@ -120,6 +120,4 @@ async def upload_artifacts(
 
 def create_update_json(step: Step):
     now = int(time.time())
-    content = {"content": step.to_dict(), "timestamp": now}
-
-    return content
+    return {"content": step.to_dict(), "timestamp": now}

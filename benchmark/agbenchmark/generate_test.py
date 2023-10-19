@@ -193,12 +193,11 @@ def generate_tests() -> None:  # sourcery skip: invert-any-all
             if not categories_set.intersection(commands_set):
                 continue
 
-        # --test flag, only run the test if it's the exact one specified
-        tests = []
-        for command in commands:
-            if command.startswith("--test="):
-                tests.append(command.split("=")[1])
-
+        tests = [
+            command.split("=")[1]
+            for command in commands
+            if command.startswith("--test=")
+        ]
         if tests and data["name"] not in tests:
             continue
 
@@ -206,9 +205,12 @@ def generate_tests() -> None:  # sourcery skip: invert-any-all
         in_regression = regression_tests.get(data["name"], None)
         improve_flag = in_regression and "--improve" in commands
         maintain_flag = not in_regression and "--maintain" in commands
-        if "--maintain" in commands and maintain_flag:
-            continue
-        elif "--improve" in commands and improve_flag:
+        if (
+            "--maintain" in commands
+            and maintain_flag
+            or "--improve" in commands
+            and improve_flag
+        ):
             continue
         json_files, challenge_class = create_challenge(data, json_file, json_files)
 

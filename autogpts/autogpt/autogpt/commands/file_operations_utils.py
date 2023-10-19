@@ -31,20 +31,17 @@ class TXTParser(ParserStrategy):
 class PDFParser(ParserStrategy):
     def read(self, file_path: Path) -> str:
         parser = PyPDF2.PdfReader(file_path)
-        text = ""
-        for page_idx in range(len(parser.pages)):
-            text += parser.pages[page_idx].extract_text()
-        return text
+        return "".join(
+            parser.pages[page_idx].extract_text()
+            for page_idx in range(len(parser.pages))
+        )
 
 
 # Reading text from binary file using docs parser
 class DOCXParser(ParserStrategy):
     def read(self, file_path: Path) -> str:
         doc_file = docx.Document(file_path)
-        text = ""
-        for para in doc_file.paragraphs:
-            text += para.text
-        return text
+        return "".join(para.text for para in doc_file.paragraphs)
 
 
 # Reading as dictionary and returning string format
@@ -93,8 +90,7 @@ class LaTeXParser(ParserStrategy):
     def read(self, file_path: Path) -> str:
         with open(file_path, "r") as f:
             latex = f.read()
-        text = LatexNodes2Text().latex_to_text(latex)
-        return text
+        return LatexNodes2Text().latex_to_text(latex)
 
 
 class FileContext:
@@ -140,9 +136,7 @@ def is_file_binary_fn(file_path: Path):
     """
     with open(file_path, "rb") as f:
         file_data = f.read()
-    if b"\x00" in file_data:
-        return True
-    return False
+    return b"\x00" in file_data
 
 
 def read_textual_file(file_path: Path, logger: logging.Logger) -> str:

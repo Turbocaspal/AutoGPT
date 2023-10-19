@@ -68,7 +68,6 @@ def config(request: Any) -> Any:
     Raises:
         json.JSONDecodeError: If the benchmark configuration file is not a valid JSON file.
     """
-    config = {}
     agent_benchmark_config_path = Path.cwd() / "agbenchmark_config" / "config.json"
     try:
         with open(agent_benchmark_config_path, "r") as f:
@@ -80,9 +79,7 @@ def config(request: Any) -> Any:
         print("Error: benchmark_config.json is not a valid JSON file.")
         raise
 
-    config["AgentBenchmarkConfig"] = agent_benchmark_config
-
-    return config
+    return {"AgentBenchmarkConfig": agent_benchmark_config}
 
 
 @pytest.fixture(autouse=True)

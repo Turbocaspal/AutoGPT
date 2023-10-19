@@ -115,10 +115,9 @@ class Configuration(object):
         self.access_token = access_token
         """Access token
         """
-        self.logger = {}
         """Logging Settings
         """
-        self.logger["package_logger"] = logging.getLogger("agent_protocol_client")
+        self.logger = {"package_logger": logging.getLogger("agent_protocol_client")}
         self.logger["urllib3_logger"] = logging.getLogger("urllib3")
         self.logger_format = "%(asctime)s %(levelname)s %(message)s"
         """Log format
@@ -340,9 +339,8 @@ class Configuration(object):
             identifier, self.api_key.get(alias) if alias is not None else None
         )
         if key:
-            prefix = self.api_key_prefix.get(identifier)
-            if prefix:
-                return "%s %s" % (prefix, key)
+            if prefix := self.api_key_prefix.get(identifier):
+                return f"{prefix} {key}"
             else:
                 return key
 
@@ -351,13 +349,9 @@ class Configuration(object):
 
         :return: The token for basic HTTP authentication.
         """
-        username = ""
-        if self.username is not None:
-            username = self.username
-        password = ""
-        if self.password is not None:
-            password = self.password
-        return urllib3.util.make_headers(basic_auth=username + ":" + password).get(
+        username = self.username if self.username is not None else ""
+        password = self.password if self.password is not None else ""
+        return urllib3.util.make_headers(basic_auth=f"{username}:{password}").get(
             "authorization"
         )
 
@@ -366,8 +360,7 @@ class Configuration(object):
 
         :return: The Auth Settings information dict.
         """
-        auth = {}
-        return auth
+        return {}
 
     def to_debug_report(self):
         """Gets the essential information for debugging.

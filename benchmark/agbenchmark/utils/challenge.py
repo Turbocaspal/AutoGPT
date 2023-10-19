@@ -84,7 +84,7 @@ class Challenge(ABC):
             # Check if it is a file extension
             if file_pattern.startswith("."):
                 # Find all files with the given extension in the workspace
-                matching_files = glob.glob(os.path.join(script_dir, "*" + file_pattern))
+                matching_files = glob.glob(os.path.join(script_dir, f"*{file_pattern}"))
             else:
                 # Otherwise, it is a specific file
                 matching_files = [os.path.join(script_dir, file_pattern)]
@@ -212,10 +212,6 @@ class Challenge(ABC):
 
     def get_dummy_scores(self, test_name: str, scores: dict[str, Any]) -> int | None:
         return 1  # remove this once this works
-        if 1 in scores.get("scores_obj", {}).get(test_name, []):
-            return 1
-
-        return None
 
     def skip_optional_categories(self, config: Dict[str, Any]) -> None:
         challenge_category = self.data.category

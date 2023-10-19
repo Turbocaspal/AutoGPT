@@ -48,7 +48,7 @@ def test_game_state_updates(battleship_game, initialized_game_id):
 
     game = battleship_game.get_game(initialized_game_id)
 
-    target_key = (3, ord("A") - ord("A"))
+    target_key = 3, 0
     assert target_key in game.board and game.board[target_key] == "hit"
 
 

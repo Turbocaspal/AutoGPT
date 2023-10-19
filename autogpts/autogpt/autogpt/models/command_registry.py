@@ -70,12 +70,11 @@ class CommandRegistry:
             self.commands_aliases[alias] = cmd
 
     def unregister(self, command: Command) -> None:
-        if command.name in self.commands:
-            del self.commands[command.name]
-            for alias in command.aliases:
-                del self.commands_aliases[alias]
-        else:
+        if command.name not in self.commands:
             raise KeyError(f"Command '{command.name}' not found in registry.")
+        del self.commands[command.name]
+        for alias in command.aliases:
+            del self.commands_aliases[alias]
 
     def reload_commands(self) -> None:
         """Reloads all loaded command plugins."""
@@ -142,7 +141,7 @@ class CommandRegistry:
             new_registry.import_command_module(command_module)
 
         # Unregister commands that are incompatible with the current config
-        for command in [c for c in new_registry.commands.values()]:
+        for command in list(new_registry.commands.values()):
             if callable(command.enabled) and not command.enabled(config):
                 new_registry.unregister(command)
                 logger.debug(

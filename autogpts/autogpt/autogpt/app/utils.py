@@ -48,11 +48,7 @@ async def clean_input(config: Config, prompt: str = ""):
         # ask for input, default when just pressing Enter is y
         logger.debug("Asking user via keyboard...")
 
-        # handle_sigint must be set to False, so the signal handler in the
-        # autogpt/main.py could be employed properly. This referes to
-        # https://github.com/Significant-Gravitas/AutoGPT/pull/4799/files/3966cdfd694c2a80c0333823c3bc3da090f85ed3#r1264278776
-        answer = await session.prompt_async(ANSI(prompt + " "), handle_sigint=False)
-        return answer
+        return await session.prompt_async(ANSI(f"{prompt} "), handle_sigint=False)
     except KeyboardInterrupt:
         logger.info("You interrupted AutoGPT")
         logger.info("Quitting...")
@@ -89,7 +85,7 @@ def get_latest_bulletin() -> tuple[str, bool]:
             "data/CURRENT_BULLETIN.md", "r", encoding="utf-8"
         ).read()
     new_bulletin = get_bulletin_from_web()
-    is_new_news = new_bulletin != "" and new_bulletin != current_bulletin
+    is_new_news = new_bulletin not in ["", current_bulletin]
 
     news_header = Fore.YELLOW + "Welcome to AutoGPT!\n"
     if new_bulletin or current_bulletin:
@@ -129,7 +125,7 @@ def markdown_to_ansi_style(markdown: str):
 
 
 def get_legal_warning() -> str:
-    legal_text = """
+    return """
 ## DISCLAIMER AND INDEMNIFICATION AGREEMENT
 ### PLEASE READ THIS DISCLAIMER AND INDEMNIFICATION AGREEMENT CAREFULLY BEFORE USING THE AUTOGPT SYSTEM. BY USING THE AUTOGPT SYSTEM, YOU AGREE TO BE BOUND BY THIS AGREEMENT.
 
@@ -146,7 +142,6 @@ behalf. You acknowledge that using the System could expose you to potential liab
 ## Indemnification
 By using the System, you agree to indemnify, defend, and hold harmless the Project Parties from and against any and all claims, liabilities, damages, losses, or expenses (including reasonable attorneys' fees and costs) arising out of or in connection with your use of the System, including, without limitation, any actions taken by the System on your behalf, any failure to properly supervise or monitor the System, and any resulting harm or unintended consequences.
             """
-    return legal_text
 
 
 def print_motd(config: Config, logger: logging.Logger):

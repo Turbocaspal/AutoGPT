@@ -154,29 +154,26 @@ class SimplePlanner(Configurable):
         prompt = prompt_strategy.build_prompt(**template_kwargs)
 
         self._logger.debug(f"Using prompt:\n{dump_prompt(prompt)}\n")
-        response = await provider.create_chat_completion(
+        return await provider.create_chat_completion(
             model_prompt=prompt.messages,
             functions=prompt.functions,
             **model_configuration,
             completion_parser=prompt_strategy.parse_response_content,
         )
-        return response
 
     def _make_template_kwargs_for_strategy(self, strategy: PromptStrategy):
         provider = self._providers[strategy.model_classification]
-        template_kwargs = {
+        return {
             "os_info": get_os_info(),
             "api_budget": provider.get_remaining_budget(),
             "current_time": time.strftime("%c"),
         }
-        return template_kwargs
 
 
 def get_os_info() -> str:
     os_name = platform.system()
-    os_info = (
+    return (
         platform.platform(terse=True)
         if os_name != "Linux"
         else distro.name(pretty=True)
     )
-    return os_info

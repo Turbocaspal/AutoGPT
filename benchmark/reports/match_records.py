@@ -63,11 +63,7 @@ def get_reports():
     current_dir = os.getcwd()
 
     # Check if the current directory ends with 'reports'
-    if current_dir.endswith("reports"):
-        reports_dir = "/"
-    else:
-        reports_dir = "reports"
-
+    reports_dir = "/" if current_dir.endswith("reports") else "reports"
     # Iterate over all agent directories in the reports directory
     for agent_name in os.listdir(reports_dir):
         if agent_name is None:

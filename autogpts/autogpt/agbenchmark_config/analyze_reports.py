@@ -98,7 +98,7 @@ for report_file in sorted(report_files):
             test_metrics = test_data["metrics"]
             result_indicator = "❔"
 
-            if not "attempted" in test_metrics:
+            if "attempted" not in test_metrics:
                 return
             elif test_metrics["attempted"]:
                 if test_name not in test_names:

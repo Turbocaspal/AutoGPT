@@ -64,9 +64,6 @@ class SimpleAbilityRegistry(AbilityRegistry, Configurable):
             "logger": self._logger.getChild(ability_name),
             "configuration": ability_configuration,
         }
-        if ability_configuration.packages_required:
-            # TODO: Check packages are installed and maybe install them.
-            pass
         if ability_configuration.memory_provider_required:
             ability_args["memory"] = self._memory
         if ability_configuration.workspace_required:

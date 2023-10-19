@@ -71,7 +71,9 @@ class TaskRequestBody(BaseModel):
         if not isinstance(obj, dict):
             return TaskRequestBody.parse_obj(obj)
 
-        _obj = TaskRequestBody.parse_obj(
-            {"input": obj.get("input"), "additional_input": obj.get("additional_input")}
+        return TaskRequestBody.parse_obj(
+            {
+                "input": obj.get("input"),
+                "additional_input": obj.get("additional_input"),
+            }
         )
-        return _obj

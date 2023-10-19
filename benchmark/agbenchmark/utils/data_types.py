@@ -138,9 +138,8 @@ class Eval(BaseModel):
         if "type" in values and values["type"] == "llm":
             if v is None:
                 raise ValueError(f"{field.name} must be provided when type is 'llm'")
-        else:
-            if v is not None:
-                raise ValueError(f"{field.name} should only exist when type is 'llm'")
+        elif v is not None:
+            raise ValueError(f"{field.name} should only exist when type is 'llm'")
         return v
 
     @validator("scoring")
@@ -219,21 +218,13 @@ class ChallengeData(BaseModel):
             "category": self.shared_category,
             "task": self.task,
             "cutoff": self.cutoff,
+            "info": {datum["name"]: datum["info"] for datum in file_datum}
+            if not self.info
+            else self.info,
+            "ground": {datum["name"]: datum["ground"] for datum in file_datum}
+            if not self.ground
+            else self.ground,
         }
-
-        if not self.info:
-            same_task_data["info"] = {
-                datum["name"]: datum["info"] for datum in file_datum
-            }
-        else:
-            same_task_data["info"] = self.info
-
-        if not self.ground:
-            same_task_data["ground"] = {
-                datum["name"]: datum["ground"] for datum in file_datum
-            }
-        else:
-            same_task_data["ground"] = self.ground
 
         return ChallengeData(**same_task_data)
 

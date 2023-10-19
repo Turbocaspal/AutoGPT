@@ -91,11 +91,7 @@ def before_record_request(request: Request) -> Request | None:
     request = replace_request_hostname(request, ORIGINAL_URL, NEW_URL)
 
     filtered_request = filter_hostnames(request)
-    if not filtered_request:
-        return None
-
-    filtered_request_without_dynamic_data = freeze_request(filtered_request)
-    return filtered_request_without_dynamic_data
+    return None if not filtered_request else freeze_request(filtered_request)
 
 
 from urllib.parse import urlparse, urlunparse

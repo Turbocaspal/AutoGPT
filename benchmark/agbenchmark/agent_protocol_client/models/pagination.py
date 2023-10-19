@@ -52,8 +52,7 @@ class Pagination(BaseModel):
 
     def to_dict(self):
         """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
-        return _dict
+        return self.dict(by_alias=True, exclude={}, exclude_none=True)
 
     @classmethod
     def from_dict(cls, obj: dict) -> Pagination:
@@ -64,7 +63,7 @@ class Pagination(BaseModel):
         if not isinstance(obj, dict):
             return Pagination.parse_obj(obj)
 
-        _obj = Pagination.parse_obj(
+        return Pagination.parse_obj(
             {
                 "total_items": obj.get("total_items"),
                 "total_pages": obj.get("total_pages"),
@@ -72,4 +71,3 @@ class Pagination(BaseModel):
                 "page_size": obj.get("page_size"),
             }
         )
-        return _obj

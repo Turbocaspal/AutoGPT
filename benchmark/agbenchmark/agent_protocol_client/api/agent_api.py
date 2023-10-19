@@ -100,7 +100,7 @@ class AgentApi(object):
     @validate_arguments
     def create_agent_task_with_http_info(
         self, task_request_body: Optional[TaskRequestBody] = None, **kwargs
-    ) -> ApiResponse:  # noqa: E501
+    ) -> ApiResponse:    # noqa: E501
         """Creates a task for the agent.  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -138,25 +138,21 @@ class AgentApi(object):
 
         _params = locals()
 
-        _all_params = ["task_request_body"]
-        _all_params.extend(
-            [
-                "async_req",
-                "_return_http_data_only",
-                "_preload_content",
-                "_request_timeout",
-                "_request_auth",
-                "_content_type",
-                "_headers",
-            ]
-        )
-
+        _all_params = [
+            "task_request_body",
+            "async_req",
+            "_return_http_data_only",
+            "_preload_content",
+            "_request_timeout",
+            "_request_auth",
+            "_content_type",
+            "_headers",
+        ]
         # validate the arguments
         for _key, _val in _params["kwargs"].items():
             if _key not in _all_params:
                 raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method create_agent_task" % _key
+                    f"Got an unexpected keyword argument '{_key}' to method create_agent_task"
                 )
             _params[_key] = _val
         del _params["kwargs"]
@@ -183,12 +179,10 @@ class AgentApi(object):
             ["application/json"]
         )  # noqa: E501
 
-        # set the HTTP header `Content-Type`
-        _content_types_list = _params.get(
+        if _content_types_list := _params.get(
             "_content_type",
             self.api_client.select_header_content_type(["application/json"]),
-        )
-        if _content_types_list:
+        ):
             _header_params["Content-Type"] = _content_types_list
 
         # authentication setting
@@ -284,7 +278,7 @@ class AgentApi(object):
         task_id: Annotated[StrictStr, Field(..., description="ID of the task")],
         artifact_id: Annotated[StrictStr, Field(..., description="ID of the artifact")],
         **kwargs,
-    ) -> ApiResponse:  # noqa: E501
+    ) -> ApiResponse:    # noqa: E501
         """Download a specified artifact.  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -324,30 +318,25 @@ class AgentApi(object):
 
         _params = locals()
 
-        _all_params = ["task_id", "artifact_id"]
-        _all_params.extend(
-            [
-                "async_req",
-                "_return_http_data_only",
-                "_preload_content",
-                "_request_timeout",
-                "_request_auth",
-                "_content_type",
-                "_headers",
-            ]
-        )
-
+        _all_params = [
+            "task_id",
+            "artifact_id",
+            "async_req",
+            "_return_http_data_only",
+            "_preload_content",
+            "_request_timeout",
+            "_request_auth",
+            "_content_type",
+            "_headers",
+        ]
         # validate the arguments
         for _key, _val in _params["kwargs"].items():
             if _key not in _all_params:
                 raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method download_agent_task_artifact" % _key
+                    f"Got an unexpected keyword argument '{_key}' to method download_agent_task_artifact"
                 )
             _params[_key] = _val
         del _params["kwargs"]
-
-        _collection_formats = {}
 
         # process the path parameters
         _path_params = {}
@@ -378,6 +367,7 @@ class AgentApi(object):
             "200": "bytearray",
         }
 
+        _collection_formats = {}
         return self.api_client.call_api(
             "/agent/tasks/{task_id}/artifacts/{artifact_id}",
             "GET",
@@ -464,7 +454,7 @@ class AgentApi(object):
         task_id: Annotated[StrictStr, Field(..., description="ID of the task")],
         step_request_body: Optional[StepRequestBody] = None,
         **kwargs,
-    ) -> ApiResponse:  # noqa: E501
+    ) -> ApiResponse:    # noqa: E501
         """Execute a step in the specified agent task.  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -504,25 +494,22 @@ class AgentApi(object):
 
         _params = locals()
 
-        _all_params = ["task_id", "step_request_body"]
-        _all_params.extend(
-            [
-                "async_req",
-                "_return_http_data_only",
-                "_preload_content",
-                "_request_timeout",
-                "_request_auth",
-                "_content_type",
-                "_headers",
-            ]
-        )
-
+        _all_params = [
+            "task_id",
+            "step_request_body",
+            "async_req",
+            "_return_http_data_only",
+            "_preload_content",
+            "_request_timeout",
+            "_request_auth",
+            "_content_type",
+            "_headers",
+        ]
         # validate the arguments
         for _key, _val in _params["kwargs"].items():
             if _key not in _all_params:
                 raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method execute_agent_task_step" % _key
+                    f"Got an unexpected keyword argument '{_key}' to method execute_agent_task_step"
                 )
             _params[_key] = _val
         del _params["kwargs"]
@@ -551,12 +538,10 @@ class AgentApi(object):
             ["application/json"]
         )  # noqa: E501
 
-        # set the HTTP header `Content-Type`
-        _content_types_list = _params.get(
+        if _content_types_list := _params.get(
             "_content_type",
             self.api_client.select_header_content_type(["application/json"]),
-        )
-        if _content_types_list:
+        ):
             _header_params["Content-Type"] = _content_types_list
 
         # authentication setting
@@ -644,7 +629,7 @@ class AgentApi(object):
         self,
         task_id: Annotated[StrictStr, Field(..., description="ID of the task")],
         **kwargs,
-    ) -> ApiResponse:  # noqa: E501
+    ) -> ApiResponse:    # noqa: E501
         """Get details about a specified agent task.  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -682,30 +667,24 @@ class AgentApi(object):
 
         _params = locals()
 
-        _all_params = ["task_id"]
-        _all_params.extend(
-            [
-                "async_req",
-                "_return_http_data_only",
-                "_preload_content",
-                "_request_timeout",
-                "_request_auth",
-                "_content_type",
-                "_headers",
-            ]
-        )
-
+        _all_params = [
+            "task_id",
+            "async_req",
+            "_return_http_data_only",
+            "_preload_content",
+            "_request_timeout",
+            "_request_auth",
+            "_content_type",
+            "_headers",
+        ]
         # validate the arguments
         for _key, _val in _params["kwargs"].items():
             if _key not in _all_params:
                 raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method get_agent_task" % _key
+                    f"Got an unexpected keyword argument '{_key}' to method get_agent_task"
                 )
             _params[_key] = _val
         del _params["kwargs"]
-
-        _collection_formats = {}
 
         # process the path parameters
         _path_params = {}
@@ -733,6 +712,7 @@ class AgentApi(object):
             "200": "Task",
         }
 
+        _collection_formats = {}
         return self.api_client.call_api(
             "/agent/tasks/{task_id}",
             "GET",
@@ -819,7 +799,7 @@ class AgentApi(object):
         task_id: Annotated[StrictStr, Field(..., description="ID of the task")],
         step_id: Annotated[StrictStr, Field(..., description="ID of the step")],
         **kwargs,
-    ) -> ApiResponse:  # noqa: E501
+    ) -> ApiResponse:    # noqa: E501
         """Get details about a specified task step.  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -859,30 +839,25 @@ class AgentApi(object):
 
         _params = locals()
 
-        _all_params = ["task_id", "step_id"]
-        _all_params.extend(
-            [
-                "async_req",
-                "_return_http_data_only",
-                "_preload_content",
-                "_request_timeout",
-                "_request_auth",
-                "_content_type",
-                "_headers",
-            ]
-        )
-
+        _all_params = [
+            "task_id",
+            "step_id",
+            "async_req",
+            "_return_http_data_only",
+            "_preload_content",
+            "_request_timeout",
+            "_request_auth",
+            "_content_type",
+            "_headers",
+        ]
         # validate the arguments
         for _key, _val in _params["kwargs"].items():
             if _key not in _all_params:
                 raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method get_agent_task_step" % _key
+                    f"Got an unexpected keyword argument '{_key}' to method get_agent_task_step"
                 )
             _params[_key] = _val
         del _params["kwargs"]
-
-        _collection_formats = {}
 
         # process the path parameters
         _path_params = {}
@@ -913,6 +888,7 @@ class AgentApi(object):
             "200": "Step",
         }
 
+        _collection_formats = {}
         return self.api_client.call_api(
             "/agent/tasks/{task_id}/steps/{step_id}",
             "GET",
@@ -993,7 +969,7 @@ class AgentApi(object):
         self,
         task_id: Annotated[StrictStr, Field(..., description="ID of the task")],
         **kwargs,
-    ) -> ApiResponse:  # noqa: E501
+    ) -> ApiResponse:    # noqa: E501
         """List all artifacts that have been created for the given task.  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -1031,30 +1007,24 @@ class AgentApi(object):
 
         _params = locals()
 
-        _all_params = ["task_id"]
-        _all_params.extend(
-            [
-                "async_req",
-                "_return_http_data_only",
-                "_preload_content",
-                "_request_timeout",
-                "_request_auth",
-                "_content_type",
-                "_headers",
-            ]
-        )
-
+        _all_params = [
+            "task_id",
+            "async_req",
+            "_return_http_data_only",
+            "_preload_content",
+            "_request_timeout",
+            "_request_auth",
+            "_content_type",
+            "_headers",
+        ]
         # validate the arguments
         for _key, _val in _params["kwargs"].items():
             if _key not in _all_params:
                 raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method list_agent_task_artifacts" % _key
+                    f"Got an unexpected keyword argument '{_key}' to method list_agent_task_artifacts"
                 )
             _params[_key] = _val
         del _params["kwargs"]
-
-        _collection_formats = {}
 
         # process the path parameters
         _path_params = {}
@@ -1082,6 +1052,7 @@ class AgentApi(object):
             "200": "Artifacts",
         }
 
+        _collection_formats = {}
         return self.api_client.call_api(
             "/agent/tasks/{task_id}/artifacts",
             "GET",
@@ -1162,7 +1133,7 @@ class AgentApi(object):
         self,
         task_id: Annotated[StrictStr, Field(..., description="ID of the task")],
         **kwargs,
-    ) -> ApiResponse:  # noqa: E501
+    ) -> ApiResponse:    # noqa: E501
         """List all steps for the specified task.  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -1200,30 +1171,24 @@ class AgentApi(object):
 
         _params = locals()
 
-        _all_params = ["task_id"]
-        _all_params.extend(
-            [
-                "async_req",
-                "_return_http_data_only",
-                "_preload_content",
-                "_request_timeout",
-                "_request_auth",
-                "_content_type",
-                "_headers",
-            ]
-        )
-
+        _all_params = [
+            "task_id",
+            "async_req",
+            "_return_http_data_only",
+            "_preload_content",
+            "_request_timeout",
+            "_request_auth",
+            "_content_type",
+            "_headers",
+        ]
         # validate the arguments
         for _key, _val in _params["kwargs"].items():
             if _key not in _all_params:
                 raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method list_agent_task_steps" % _key
+                    f"Got an unexpected keyword argument '{_key}' to method list_agent_task_steps"
                 )
             _params[_key] = _val
         del _params["kwargs"]
-
-        _collection_formats = {}
 
         # process the path parameters
         _path_params = {}
@@ -1251,6 +1216,7 @@ class AgentApi(object):
             "200": "List[str]",
         }
 
+        _collection_formats = {}
         return self.api_client.call_api(
             "/agent/tasks/{task_id}/steps",
             "GET",
@@ -1315,7 +1281,7 @@ class AgentApi(object):
     @validate_arguments
     def list_agent_tasks_ids_with_http_info(
         self, **kwargs
-    ) -> ApiResponse:  # noqa: E501
+    ) -> ApiResponse:    # noqa: E501
         """List all tasks that have been created for the agent.  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -1351,30 +1317,23 @@ class AgentApi(object):
 
         _params = locals()
 
-        _all_params = []
-        _all_params.extend(
-            [
-                "async_req",
-                "_return_http_data_only",
-                "_preload_content",
-                "_request_timeout",
-                "_request_auth",
-                "_content_type",
-                "_headers",
-            ]
-        )
-
+        _all_params = [
+            "async_req",
+            "_return_http_data_only",
+            "_preload_content",
+            "_request_timeout",
+            "_request_auth",
+            "_content_type",
+            "_headers",
+        ]
         # validate the arguments
         for _key, _val in _params["kwargs"].items():
             if _key not in _all_params:
                 raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method list_agent_tasks_ids" % _key
+                    f"Got an unexpected keyword argument '{_key}' to method list_agent_tasks_ids"
                 )
             _params[_key] = _val
         del _params["kwargs"]
-
-        _collection_formats = {}
 
         # process the path parameters
         _path_params = {}
@@ -1400,6 +1359,7 @@ class AgentApi(object):
             "200": "List[str]",
         }
 
+        _collection_formats = {}
         return self.api_client.call_api(
             "/agent/tasks",
             "GET",
@@ -1520,7 +1480,7 @@ class AgentApi(object):
             ),
         ] = None,
         **kwargs,
-    ) -> ApiResponse:  # noqa: E501
+    ) -> ApiResponse:    # noqa: E501
         """Upload an artifact for the specified task.  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -1562,25 +1522,23 @@ class AgentApi(object):
 
         _params = locals()
 
-        _all_params = ["task_id", "file", "relative_path"]
-        _all_params.extend(
-            [
-                "async_req",
-                "_return_http_data_only",
-                "_preload_content",
-                "_request_timeout",
-                "_request_auth",
-                "_content_type",
-                "_headers",
-            ]
-        )
-
+        _all_params = [
+            "task_id",
+            "file",
+            "relative_path",
+            "async_req",
+            "_return_http_data_only",
+            "_preload_content",
+            "_request_timeout",
+            "_request_auth",
+            "_content_type",
+            "_headers",
+        ]
         # validate the arguments
         for _key, _val in _params["kwargs"].items():
             if _key not in _all_params:
                 raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method upload_agent_task_artifacts" % _key
+                    f"Got an unexpected keyword argument '{_key}' to method upload_agent_task_artifacts"
                 )
             _params[_key] = _val
         del _params["kwargs"]
@@ -1612,12 +1570,10 @@ class AgentApi(object):
             ["application/json"]
         )  # noqa: E501
 
-        # set the HTTP header `Content-Type`
-        _content_types_list = _params.get(
+        if _content_types_list := _params.get(
             "_content_type",
             self.api_client.select_header_content_type(["multipart/form-data"]),
-        )
-        if _content_types_list:
+        ):
             _header_params["Content-Type"] = _content_types_list
 
         # authentication setting

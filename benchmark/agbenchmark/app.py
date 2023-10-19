@@ -146,10 +146,7 @@ def run_single_test(body: CreateReportRequest) -> Any:
     print(body.dict())
     # it's a hack because other parts of the code are using sys.argv
     print(os.getcwd())
-    command_options = ["agbenchmark"]
-    # if body.category:
-    #     sys.argv.append(f"--category={body.category}")
-    command_options.append(f"--test={body.test}")
+    command_options = ["agbenchmark", f"--test={body.test}"]
     if body.mock:
         command_options.append("--mock")
 

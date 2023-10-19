@@ -94,15 +94,13 @@ class PluginsConfig(BaseModel):
         plugins_allowlist: list[str],
     ):
         """Create an empty plugins_config.yaml file. Fill it with values from old env variables."""
-        base_config = {}
-
         logger.debug(f"Legacy plugin denylist: {plugins_denylist}")
         logger.debug(f"Legacy plugin allowlist: {plugins_allowlist}")
 
-        # Backwards-compatibility shim
-        for plugin_name in plugins_denylist:
-            base_config[plugin_name] = {"enabled": False, "config": {}}
-
+        base_config = {
+            plugin_name: {"enabled": False, "config": {}}
+            for plugin_name in plugins_denylist
+        }
         for plugin_name in plugins_allowlist:
             base_config[plugin_name] = {"enabled": True, "config": {}}
 

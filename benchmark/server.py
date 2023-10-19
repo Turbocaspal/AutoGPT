@@ -81,7 +81,9 @@ async def get_file(artifact_id: str):
             return StreamingResponse(
                 io.BytesIO(artifact["binary"]),
                 media_type="application/octet-stream",
-                headers={"Content-Disposition": f"attachment; filename=test.txt"},
+                headers={
+                    "Content-Disposition": "attachment; filename=test.txt"
+                },
             )
     # return 404
     return HTTPException(status_code=404, detail="Artifact not found")

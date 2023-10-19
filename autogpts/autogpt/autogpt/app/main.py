@@ -376,11 +376,9 @@ def _get_cycle_budget(continuous_mode: bool, continuous_limit: int) -> int | flo
     # to a cycle_budget (maximum number of cycles to run without checking in with the
     # user) and a count of cycles_remaining before we check in..
     if continuous_mode:
-        cycle_budget = continuous_limit if continuous_limit else math.inf
+        return continuous_limit if continuous_limit else math.inf
     else:
-        cycle_budget = 1
-
-    return cycle_budget
+        return 1
 
 
 class UserFeedback(str, enum.Enum):
@@ -642,7 +640,7 @@ async def get_user_feedback(
             console_input = await clean_input(config, "Waiting for your response...")
         else:
             console_input = await clean_input(
-                config, Fore.MAGENTA + "Input:" + Style.RESET_ALL
+                config, f"{Fore.MAGENTA}Input:{Style.RESET_ALL}"
             )
 
         # Parse user input

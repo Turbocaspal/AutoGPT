@@ -112,14 +112,9 @@ class BaseAgentConfiguration(SystemConfiguration):
             smart_llm = values["smart_llm"]
             fast_llm = values["fast_llm"]
             assert all(
-                [
-                    not any(s in name for s in {"-0301", "-0314"})
-                    for name in {smart_llm, fast_llm}
-                ]
-            ), (
-                f"Model {smart_llm} does not support OpenAI Functions. "
-                "Please disable OPENAI_FUNCTIONS or choose a suitable model."
-            )
+                all(s not in name for s in {"-0301", "-0314"})
+                for name in {smart_llm, fast_llm}
+            ), f"Model {smart_llm} does not support OpenAI Functions. Please disable OPENAI_FUNCTIONS or choose a suitable model."
         return v
 
 
@@ -205,11 +200,12 @@ class BaseAgent(Configurable[BaseAgentSettings], ABC):
     def set_id(self, new_id: str, new_agent_dir: Optional[Path] = None):
         self.state.agent_id = new_id
         if self.state.agent_data_dir:
-            if not new_agent_dir:
+            if new_agent_dir:
+                self.attach_fs(new_agent_dir)
+            else:
                 raise ValueError(
                     "new_agent_dir must be specified if one is currently configured"
                 )
-            self.attach_fs(new_agent_dir)
 
     def attach_fs(self, agent_dir: Path) -> AgentFileManager:
         self.file_manager = AgentFileManager(agent_dir)
@@ -318,7 +314,7 @@ class BaseAgent(Configurable[BaseAgentSettings], ABC):
         ai_directives.best_practices += scratchpad.best_practices
         extra_commands += list(scratchpad.commands.values())
 
-        prompt = self.prompt_strategy.build_prompt(
+        return self.prompt_strategy.build_prompt(
             task=self.state.task,
             ai_profile=self.ai_profile,
             ai_directives=ai_directives,
@@ -328,15 +324,15 @@ class BaseAgent(Configurable[BaseAgentSettings], ABC):
             + extra_commands,
             event_history=self.event_history,
             max_prompt_tokens=self.send_token_limit,
-            count_tokens=lambda x: self.llm_provider.count_tokens(x, self.llm.name),
+            count_tokens=lambda x: self.llm_provider.count_tokens(
+                x, self.llm.name
+            ),
             count_message_tokens=lambda x: self.llm_provider.count_message_tokens(
                 x, self.llm.name
             ),
             extra_messages=extra_messages,
             **extras,
         )
-
-        return prompt
 
     def on_before_think(
         self,

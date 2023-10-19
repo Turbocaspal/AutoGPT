@@ -16,8 +16,11 @@ def three_sum(nums: List[int], target: int) -> Optional[List[int]]:
             elif three_sum > target:
                 r -= 1
             else:
-                indices = sorted(
-                    [nums_indices[i][1], nums_indices[l][1], nums_indices[r][1]]
+                return sorted(
+                    [
+                        nums_indices[i][1],
+                        nums_indices[l][1],
+                        nums_indices[r][1],
+                    ]
                 )
-                return indices
     return None

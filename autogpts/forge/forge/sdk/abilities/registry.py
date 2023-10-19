@@ -66,7 +66,7 @@ class Ability(pydantic.BaseModel):
         func_summary = f"{self.name}("
         for param in self.parameters:
             func_summary += f"{param.name}: {param.type}, "
-        func_summary = func_summary[:-2] + ")"
+        func_summary = f"{func_summary[:-2]})"
         func_summary += f" -> {self.output_type}. Usage: {self.description},"
         return func_summary
 
@@ -76,9 +76,7 @@ def ability(
 ):
     def decorator(func):
         func_params = inspect.signature(func).parameters
-        param_names = set(
-            [AbilityParameter.parse_obj(param).name for param in parameters]
-        )
+        param_names = {AbilityParameter.parse_obj(param).name for param in parameters}
         param_names.add("agent")
         param_names.add("task_id")
         func_param_names = set(func_params.keys())
@@ -108,7 +106,7 @@ class AbilityRegister:
         for ability_path in glob.glob(
             os.path.join(os.path.dirname(__file__), "**/*.py"), recursive=True
         ):
-            if not os.path.basename(ability_path) in [
+            if os.path.basename(ability_path) not in [
                 "__init__.py",
                 "registry.py",
             ]:
